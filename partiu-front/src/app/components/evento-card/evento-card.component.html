@@ -1,0 +1,10 @@
+<ion-card *ngIf="evento">
+  <img [src]="evento.imagem" alt="Imagem do evento" />
+  <ion-card-header>
+    <ion-card-title>{{ evento.titulo }}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <p><strong>Data:</strong> {{ evento.data }}</p>
+    <p><strong>Local:</strong> {{ evento.local }}</p>
+  </ion-card-content>
+</ion-card>

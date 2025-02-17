@@ -1,23 +1,25 @@
 import { Component } from '@angular/core';
-import { EventService } from '../services/event.service';
-import { EventCardComponent } from '../components/event-card/event-card.component';
+import { EventoService } from '../services/evento.service';
+import { EventoCardComponent } from '../components/evento-card/evento-card.component';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { Event } from '../models/event.model';
+import { Evento } from '../models/evento.model';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, EventCardComponent]
+  imports: [CommonModule, IonicModule, EventoCardComponent]
 })
 export class HomePage {
-  events: Event[] = [];
+  eventos: Evento[] = [];
 
-  constructor(private eventService: EventService) {}
+  constructor(private eventoService: EventoService) {}
 
   ngOnInit() {
-    this.events = this.eventService.getEvents();
+    this.eventoService.getEventos().subscribe(eventos => {
+      this.eventos = eventos;
+    });
   }
 }

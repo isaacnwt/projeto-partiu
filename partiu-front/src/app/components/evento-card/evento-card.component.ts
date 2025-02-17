@@ -1,18 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { Event } from '../../models/event.model';
+import { Evento } from '../../models/evento.model';
 
 @Component({
   selector: 'app-event-card',
-  templateUrl: './event-card.component.html',
-  styleUrls: ['./event-card.component.scss'],
+  templateUrl: './evento-card.component.html',
+  styleUrls: ['./evento-card.component.scss'],
   standalone: true,
   imports: [CommonModule, IonicModule],
 })
-export class EventCardComponent  implements OnInit {
+export class EventoCardComponent  implements OnInit {
 
-  @Input() event!: Event;
+  @Input() evento!: Evento;
 
   constructor() { }
 
