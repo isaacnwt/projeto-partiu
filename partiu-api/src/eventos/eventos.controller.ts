@@ -1,17 +1,19 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { EventosService } from './eventos.service';
+import { CreateEventoDto } from './dto/create-evento.dto/create-evento.dto';
 
 @Controller('eventos')
 export class EventosController {
     constructor(private readonly eventosService: EventosService) {}
 
     @Post()
-    async criar(@Body() criarEventoDto: any) {
-        return this.eventosService.criar(criarEventoDto);
+    @UsePipes(new ValidationPipe({ whitelist: true }))
+    async create(@Body() createEventoDto: CreateEventoDto) {
+        return this.eventosService.create(createEventoDto);
     }
 
     @Get()
-    async listarTodos() {
-        return this.eventosService.listarTodos();
+    async findAll() {
+        return this.eventosService.findAll();
     }
 }
