@@ -1,4 +1,25 @@
-import { IsString, IsNotEmpty, IsDateString } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsDateString, ValidateNested, IsArray } from 'class-validator';
+import { Type } from 'class-transformer';
+
+class LinkDto {
+  @IsString()
+  @IsNotEmpty()
+  label: string;
+
+  @IsString()
+  @IsNotEmpty()
+  url: string;
+}
+
+class ContatoDto {
+  @IsString()
+  @IsNotEmpty()
+  nome: string;
+
+  @IsString()
+  @IsNotEmpty()
+  telefone: string;
+}
 
 export class CreateEventoDto {
   @IsString()
@@ -6,13 +27,26 @@ export class CreateEventoDto {
   titulo: string;
 
   @IsString()
+  @IsOptional()
   descricao?: string;
-
-  @IsDateString()
-  @IsNotEmpty()
-  data: string;
 
   @IsString()
   @IsNotEmpty()
-  local: string;
+  data: string; // DD/MM/AAAA
+
+  @IsString()
+  @IsNotEmpty()
+  endereco: string; // TODO - especificar campos rua, número, CEP
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => LinkDto)
+  @IsOptional()
+  links?: LinkDto[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ContatoDto)
+  @IsOptional()
+  contatos?: ContatoDto[];
 }
