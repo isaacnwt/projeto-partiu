@@ -1,10 +1,29 @@
 <ion-card *ngIf="evento">
-  <img [src]="evento.imagem" alt="Imagem do evento" />
+  <img *ngIf="evento.imagem" [src]="evento.imagem" alt="Imagem do evento" />
   <ion-card-header>
     <ion-card-title>{{ evento.titulo }}</ion-card-title>
   </ion-card-header>
   <ion-card-content>
-    <p><strong>Data:</strong> {{ evento.data }}</p>
-    <p><strong>Local:</strong> {{ evento.local }}</p>
+    <p *ngIf="evento.descricao"><strong>Descrição:</strong> {{ evento.descricao }}</p>
+    <p><strong>Data:</strong> {{ evento.data | date:'dd/MM/yyyy' }}</p>
+    <p><strong>Endereço:</strong> {{ evento.endereco }}</p>
+
+    <div *ngIf="evento.links?.length">
+      <strong>Links:</strong>
+      <ul>
+        <li *ngFor="let link of evento.links">
+          <a [href]="link.url" target="_blank">{{ link.label }}</a>
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="evento.contatos?.length">
+      <strong>Contatos:</strong>
+      <ul>
+        <li *ngFor="let contato of evento.contatos">
+          {{ contato.nome }} <span *ngIf="contato.telefone"> - {{ contato.telefone }}</span>
+        </li>
+      </ul>
+    </div>
   </ion-card-content>
 </ion-card>
