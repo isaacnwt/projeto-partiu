@@ -10,9 +10,8 @@ import { ScraperService } from './scrapping/scraper.service';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    // MongooseModule.forRoot(process.env.MONGO_URI as string),
-    ...(process.env.MONGO_URI ? [MongooseModule.forRoot(process.env.MONGO_URI)] : []),
-    // EventosModule,
+    MongooseModule.forRoot(process.env.MONGO_URI as string),
+    EventosModule,
   ],
   controllers: [AppController, ScraperController],
   providers: [AppService, ScraperService],
