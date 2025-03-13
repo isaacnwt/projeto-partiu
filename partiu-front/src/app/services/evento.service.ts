@@ -15,4 +15,12 @@ export class EventoService {
   getEventos(): Observable<Evento[]> {
     return this.http.get<Evento[]>(this.apiUrl);
   }
+
+  getEventoById(id: string): Observable<Evento> {
+    return this.http.get<Evento>(`${this.apiUrl}/${id}`);
+  }
+
+  cadastrarEvento(evento: Evento): Observable<Evento> {
+    return this.http.post<Evento>(this.apiUrl, evento);
+  }
 }
