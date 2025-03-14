@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Evento, EventoDocument } from './evento.schema';
@@ -21,6 +21,18 @@ export class EventosService {
   
   async findAll(): Promise<Evento[]> {
     return this.eventoModel.find().exec();
+  }
+
+  async findById(id: string): Promise<Evento> {
+    try {
+      const evento = await this.eventoModel.findById(id).exec();
+      if (!evento) {
+        throw new NotFoundException(`Evento com ID ${id} não encontrado`);
+      }
+      return evento;
+    } catch (error) {
+      throw new NotFoundException(`Erro ao buscar evento com ID ${id}`);
+    }
   }
 
   private formatToDate(data: string) {
