@@ -9,7 +9,7 @@ export interface Contato {
 }
 
 export interface Evento {
-  id: string;
+  _id: string;
   titulo: string;
   descricao?: string;
   data: string;
