@@ -7,13 +7,17 @@ import { AppComponent } from './app/app.component';
 import { provideHttpClient } from '@angular/common/http';
 
 import { addIcons } from 'ionicons';
-import { locationOutline, personOutline, logoWhatsapp, linkOutline } from 'ionicons/icons';
+import { locationOutline, personOutline, logoWhatsapp, linkOutline, mailOutline, callOutline, trashOutline, addCircleOutline } from 'ionicons/icons';
 
 addIcons({
   'location-outline': locationOutline,
   'person-outline': personOutline,
   'logo-whatsapp': logoWhatsapp,
   'link-outline': linkOutline,
+  'mail-outline': mailOutline,
+  'call-outline': callOutline,
+  'trash-outline': trashOutline,
+  'add-circle-outline': addCircleOutline
 });
 
 bootstrapApplication(AppComponent, {

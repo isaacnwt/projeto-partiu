@@ -23,4 +23,8 @@ export class EventoService {
   cadastrarEvento(evento: Evento): Observable<Evento> {
     return this.http.post<Evento>(this.apiUrl, evento);
   }
+
+  deletarEvento(id: string): Observable<Evento> {
+    throw new Error('Method not implemented.');
+  }
 }

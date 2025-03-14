@@ -1,13 +1,90 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>cadastro-evento</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastrar Evento</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">cadastro-evento</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <form [formGroup]="eventoForm" (ngSubmit)="cadastrar()">
+    <ion-item>
+      <ion-label position="floating">Título</ion-label>
+      <ion-input formControlName="titulo"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Descrição</ion-label>
+      <ion-textarea formControlName="descricao"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Data</ion-label>
+      <ion-input formControlName="data" type="date"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Endereço</ion-label>
+      <ion-input formControlName="endereco"></ion-input>
+    </ion-item>
+
+    <!-- Seção de Links -->
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Links</ion-label>
+        <ion-button fill="clear" color="primary" (click)="addLink()">
+          <ion-icon name="add-circle-outline"></ion-icon>
+        </ion-button>
+      </ion-list-header>
+
+      <ion-item *ngFor="let link of links.controls; let i = index">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="5">
+              <ion-input formControlName="label" placeholder="Nome do Link"></ion-input>
+            </ion-col>
+            <ion-col size="5">
+              <ion-input formControlName="url" placeholder="URL"></ion-input>
+            </ion-col>
+            <ion-col size="2" class="ion-text-center">
+              <ion-button fill="clear" color="danger" (click)="removeLink(i)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>
+
+    <!-- Seção de Contatos -->
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Contatos</ion-label>
+        <ion-button fill="clear" color="primary" (click)="addContato()">
+          <ion-icon name="add-circle-outline"></ion-icon>
+        </ion-button>
+      </ion-list-header>
+
+      <ion-item *ngFor="let contato of contatos.controls; let i = index">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="5">
+              <ion-input formControlName="nome" placeholder="Nome"></ion-input>
+            </ion-col>
+            <ion-col size="5">
+              <ion-input formControlName="telefone" placeholder="Telefone"></ion-input>
+            </ion-col>
+            <ion-col size="2" class="ion-text-center">
+              <ion-button fill="clear" color="danger" (click)="removeContato(i)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>
+
+    <ion-button expand="full" type="submit" [disabled]="!eventoForm.valid">Cadastrar</ion-button>
+  </form>
 </ion-content>

@@ -1,13 +1,23 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>perfil</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Meu Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">perfil</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ usuario.nome }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><ion-icon name="mail-outline"></ion-icon> {{ usuario.email }}</p>
+      <p>
+        <ion-icon name="call-outline"></ion-icon>
+        <a [href]="'https://wa.me/'+usuario.telefone" target="_blank">{{ usuario.telefone }}</a>
+      </p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
