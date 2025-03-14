@@ -7,16 +7,45 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
   <ion-card *ngIf="evento">
     <img *ngIf="evento.imagem" [src]="evento.imagem" alt="Imagem do evento" />
+
     <ion-card-header>
       <ion-card-title>{{ evento.titulo }}</ion-card-title>
+      <ion-card-subtitle>{{ evento.data | date:'dd/MM/yyyy - HH:mm' }}</ion-card-subtitle>
     </ion-card-header>
+
     <ion-card-content>
-      <p><strong>Descrição:</strong> {{ evento.descricao }}</p>
-      <p><strong>Data:</strong> {{ evento.data | date:'dd/MM/yyyy' }}</p>
-      <p><strong>Endereço:</strong> {{ evento.endereco }}</p>
+      <p class="descricao">{{ evento.descricao }}</p>
+
+      <ion-item lines="none">
+        <ion-icon name="location-outline" slot="start"></ion-icon>
+        <ion-label>{{ evento.endereco }}</ion-label>
+      </ion-item>
+
+      <ion-list *ngIf="evento.links?.length">
+        <ion-list-header>
+          <ion-label>Links</ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let link of evento.links">
+          <ion-icon name="link-outline" slot="start"></ion-icon>
+          <a [href]="link.url" target="_blank">{{ link.label }}</a>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngIf="evento.contatos?.length">
+        <ion-list-header>
+          <ion-label>Contatos</ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let contato of evento.contatos">
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-label>{{ contato.nome }}</ion-label>
+          <ion-button fill="outline" color="success" *ngIf="contato.telefone" [href]="'https://wa.me/' + formatPhoneNumber(contato.telefone)">
+            <ion-icon name="logo-whatsapp"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
     </ion-card-content>
   </ion-card>
 </ion-content>
