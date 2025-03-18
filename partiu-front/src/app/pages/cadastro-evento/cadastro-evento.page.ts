@@ -10,11 +10,13 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonInput,
   IonItem,
   IonLabel,
   IonList,
   IonListHeader,
   IonRow,
+  IonTextarea,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
@@ -40,6 +42,8 @@ import {
     IonHeader,
     IonTitle,
     IonToolbar,
+    IonInput,
+    IonTextarea,
     CommonModule,
     FormsModule,
     ReactiveFormsModule

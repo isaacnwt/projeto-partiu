@@ -30,7 +30,7 @@
     </ion-item>
 
     <!-- Seção de Links -->
-    <ion-list>
+    <ion-list formArrayName="links">
       <ion-list-header>
         <ion-label>Links</ion-label>
         <ion-button fill="clear" color="primary" (click)="addLink()">
@@ -38,7 +38,7 @@
         </ion-button>
       </ion-list-header>
 
-      <ion-item *ngFor="let link of links.controls; let i = index">
+      <ion-item *ngFor="let link of links.controls; let i = index" [formGroupName]="i">
         <ion-grid>
           <ion-row>
             <ion-col size="5">
@@ -58,7 +58,7 @@
     </ion-list>
 
     <!-- Seção de Contatos -->
-    <ion-list>
+    <ion-list formArrayName="contatos">
       <ion-list-header>
         <ion-label>Contatos</ion-label>
         <ion-button fill="clear" color="primary" (click)="addContato()">
@@ -66,7 +66,7 @@
         </ion-button>
       </ion-list-header>
 
-      <ion-item *ngFor="let contato of contatos.controls; let i = index">
+      <ion-item *ngFor="let contato of contatos.controls; let i = index" [formGroupName]="i">
         <ion-grid>
           <ion-row>
             <ion-col size="5">
