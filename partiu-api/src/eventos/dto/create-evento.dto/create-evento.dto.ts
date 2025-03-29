@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsDateString, ValidateNested, IsArray } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsDateString, ValidateNested, IsArray, IsMongoId } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class LinkDto {
@@ -49,4 +49,11 @@ export class CreateEventoDto {
   @Type(() => ContatoDto)
   @IsOptional()
   contatos?: ContatoDto[];
+
+  @IsMongoId()
+  @IsNotEmpty()
+  criadoPor: string;
+
+  @IsOptional()
+  fonteAutomatica?: boolean;
 }

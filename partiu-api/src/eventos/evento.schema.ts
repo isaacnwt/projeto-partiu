@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 export type EventoDocument = Evento & Document;
 
@@ -38,6 +38,12 @@ export class Evento {
 
   @Prop({ type: [Contato], default: [] })
   contatos?: Contato[];
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' })
+  criadoPor: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ default: false })
+  fonteAutomatica: boolean;
 }
 
 export const EventoSchema = SchemaFactory.createForClass(Evento);
