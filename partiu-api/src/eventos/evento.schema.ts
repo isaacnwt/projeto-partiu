@@ -27,8 +27,8 @@ export class Evento {
   @Prop()
   descricao?: string;
 
-  @Prop({ required: true, type: Date })
-  data: Date;
+  @Prop({ type: Date })
+  data?: Date;
 
   @Prop({ required: true })
   endereco: string; // TODO - especificar campos rua, número, CEP
@@ -40,7 +40,7 @@ export class Evento {
   contatos?: Contato[];
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' })
-  criadoPor: mongoose.Schema.Types.ObjectId;
+  criadoPor?: mongoose.Schema.Types.ObjectId;
 
   @Prop({ default: false })
   fonteAutomatica: boolean;
