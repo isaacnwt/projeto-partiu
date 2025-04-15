@@ -2,15 +2,11 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { Evento } from 'src/eventos/evento.schema';
+import { PALAVRAS_CHAVE_EVENTOS } from './palavras_chave';
 
 @Injectable()
 export class ScraperService {
-  PALAVRAS_CHAVE = [
-    'show', 'evento', 'musical', 'festa', 'teatro', 'festival',
-    'cinema', 'curso', 'feira', 'semana de', 'workshop', 'exposição',
-    'palestra', 'encontro', 'lançamento', 'competição', 'conferência',
-    'congresso', 'live', 'atividades', 'comemoração'
-  ];
+  PALAVRAS_CHAVE = PALAVRAS_CHAVE_EVENTOS;
 
   async getEventosSCAgora(): Promise<Evento[]> {
     const url = 'https://www.saocarlosagora.com.br/entretenimento/';
@@ -63,28 +59,26 @@ export class ScraperService {
 
   async getEventosACidadeON(): Promise<any[]> {
     const url = 'https://www.acidadeon.com/saocarlos/lazer-e-cultura/';
-    console.log(`Fetching data from: ${url}`);
+    const eventos: any[] = [];
   
     try {
       const { data: html } = await axios.get(url);
       const $ = cheerio.load(html);
-      const eventos: any[] = [];
   
-      $('.td_module_flex').each((i, el) => {
-        const titulo = $(el).find('h3.entry-title a').text().trim();
-        const descricao = $(el).find('.td-excerpt').text().trim();
-        const link = $(el).find('h3.entry-title a').attr('href');
-        const imagem = $(el).find('.td-module-thumb a span').attr('data-img-url') || '';
-        
-        // Filtra por palavras-chave no título
+      $('div.td-module-thumb a[title]').each((_, el) => {
+        const link = $(el).attr('href');
+        const titulo = $(el).attr('title')?.trim() || '';
+  
+        if (!titulo || !link) return;
+  
         if (!this.PALAVRAS_CHAVE.some(palavra => titulo.toLowerCase().includes(palavra))) {
           return;
         }
   
         const evento = {
           titulo,
-          descricao,
-          data: undefined,
+          descricao: '', 
+          data: undefined, 
           endereco: 'São Carlos - SP',
           links: [
             {
@@ -103,7 +97,7 @@ export class ScraperService {
       console.log(`Total de eventos válidos: ${eventos.length}`);
       return eventos;
     } catch (error) {
-      console.error(`Erro ao buscar eventos: ${error.message}`);
+      console.error(`Erro ao buscar eventos do ACidadeON: ${error.message}`);
       return [];
     }
   }
