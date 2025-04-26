@@ -61,12 +61,65 @@ export class ScraperService {
     }
   }
 
+  async scrapGenericPage(url: string): Promise<Evento[]> {
+    const eventos: Evento[] = [];
+  
+    try {
+      const { data: html } = await axios.get(url);
+      const $ = cheerio.load(html);
+  
+      // Busca geral por links com títulos que podem ser eventos
+      $('a').each((_, element) => {
+        const texto = $(element).text().trim();
+        const href = $(element).attr('href');
+  
+        if (!texto || !href || !this.isEventoRelevante(texto)) return;
+  
+        const titulo = texto;
+        const link = href.startsWith('http') ? href : `${url}${href}`;
+  
+        eventos.push(this.criarEventoBasico(titulo, link));
+      });
+  
+      // Busca por títulos e manchetes em outras tags
+      $('h1, h2, h3, .title, .headline, .post-title').each((_, element) => {
+        const titulo = $(element).text().trim();
+        const linkEl = $(element).find('a');
+        const href = linkEl.attr('href') || '';
+  
+        if (!titulo || !href || !this.isEventoRelevante(titulo)) return;
+  
+        eventos.push(this.criarEventoBasico(titulo, href));
+      });
+  
+      console.log(`[GENÉRICO] Eventos extraídos da página ${url}: ${eventos.length}`);
+      return eventos;
+    } catch (error) {
+      console.error(`[GENÉRICO] Falha ao processar ${url}: ${error.message}`);
+      return [];
+    }
+  }
+
+  async getEventosDeSitesExtras(): Promise<Evento[]> {
+    const urls = [
+      'https://sao-carlos.sp.gov.br/eventos',
+      'https://agenda.cultura.sp.gov.br/',
+      'https://www.sympla.com.br/eventos/sao-carlos-sp',
+    ];
+  
+    const resultados = await Promise.all(urls.map(url => this.scrapGenericPage(url)));
+    return resultados.flat();
+  }
+  
+  
+
   async getTodosEventos(): Promise<Evento[]> {
     console.log('Iniciando extração de eventos...');
     const eventosAgora = await this.getEventosSCAgora();
     const eventosACidade = await this.getEventosACidadeON();
+    const eventosExtras = await this.getEventosDeSitesExtras();
     console.log('Extração concluída!');
-    return [...eventosAgora, ...eventosACidade];
+    return [...eventosAgora, ...eventosACidade, ...eventosExtras];
   }
 
   private isEventoRelevante(titulo: string): boolean {
