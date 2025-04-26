@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Criar Conta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Preencha seus dados</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form (ngSubmit)="criarConta()">
+        <ion-item>
+          <ion-label position="floating">Nome</ion-label>
+          <ion-input [(ngModel)]="nome" name="nome" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">E-mail</ion-label>
+          <ion-input [(ngModel)]="email" name="email" type="email" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Senha</ion-label>
+          <ion-input [(ngModel)]="senha" name="senha" type="password" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Confirmar Senha</ion-label>
+          <ion-input [(ngModel)]="confirmarSenha" name="confirmarSenha" type="password" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Papel</ion-label>
+          <ion-select [(ngModel)]="papel" name="papel" interface="popover" placeholder="Selecione o papel" required>
+            <ion-select-option value="organizador">Organizador</ion-select-option>
+            <ion-select-option value="convidado">Convidado</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-button expand="full" type="submit">Cadastrar</ion-button>
+        <ion-button fill="clear" routerLink="/login">Já tenho conta</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

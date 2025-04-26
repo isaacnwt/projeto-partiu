@@ -20,6 +20,8 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { EventoService } from 'src/app/services/evento.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-cadastro-evento',
@@ -52,7 +54,11 @@ import {
 export class CadastroEventoPage {
   eventoForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private eventoService: EventoService,
+    private authService: AuthService,
+    private fb: FormBuilder
+  ) {
     this.eventoForm = this.fb.group({
       titulo: ['', Validators.required],
       descricao: [''],
@@ -99,9 +105,28 @@ export class CadastroEventoPage {
 
   cadastrar() {
     if (this.eventoForm.valid) {
-      const evento = this.eventoForm.value;
-      console.log('Evento Cadastrado:', evento);
-      // Aqui você pode chamar a API para enviar o evento
+      const usuarioId = this.authService.getUsuarioId();
+
+      if (!usuarioId) {
+        alert('Usuário não autenticado');
+        return;
+      }
+
+      const evento = {
+        ...this.eventoForm.value,
+        criadoPor: usuarioId
+      };
+
+      this.eventoService.cadastrarEvento(evento).subscribe({
+        next: (res) => {
+          console.log('Evento cadastrado com sucesso:', res);
+          this.eventoForm.reset();
+        },
+        error: (err) => {
+          console.error('Erro ao cadastrar evento:', err);
+        }
+      });
     }
   }
+
 }

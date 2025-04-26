@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,10 +16,15 @@ export class LoginPage {
   email = '';
   senha = '';
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-    // TODO: Adicionar autenticação real
-    this.router.navigateByUrl('/home');
+    this.authService.login(this.email, this.senha).subscribe({
+      next: (usuario) => {
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+        this.router.navigateByUrl('/home');
+      },
+      error: () => alert('Credenciais inválidas'),
+    });
   }
 }
