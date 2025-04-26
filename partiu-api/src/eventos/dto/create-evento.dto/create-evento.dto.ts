@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsDateString, ValidateNested, IsArray, IsMongoId } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsDateString, ValidateNested, IsArray, IsMongoId, IsISO8601 } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class LinkDto {
@@ -30,9 +30,9 @@ export class CreateEventoDto {
   @IsOptional()
   descricao?: string;
 
-  @IsString()
+  @IsISO8601() 
   @IsNotEmpty()
-  data: string; // DD/MM/AAAA
+  data: string;
 
   @IsString()
   @IsNotEmpty()

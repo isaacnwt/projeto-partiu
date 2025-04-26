@@ -11,13 +11,9 @@ export class EventosService {
   ) {}
 
   async create(createEventoDto: CreateEventoDto): Promise<Evento> {
-    const { data, ...rest } = createEventoDto;
-    const formattedDate = this.formatToDate(data);
-    
-    const createdEvento = new this.eventoModel({ ...rest, data: formattedDate });
+    const createdEvento = new this.eventoModel(createEventoDto);
     return createdEvento.save();
   }
-
   
   async findAll(): Promise<Evento[]> {
     return this.eventoModel.find().exec();
