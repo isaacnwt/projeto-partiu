@@ -7,6 +7,7 @@ import { EventosModule } from './eventos/eventos.module';
 import { ScraperController } from './scrapping/scraper.controller';
 import { ScraperService } from './scrapping/scraper.service';
 import { UsuariosModule } from './usuarios/usuarios.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UsuariosModule } from './usuarios/usuarios.module';
     MongooseModule.forRoot(process.env.MONGO_URI as string),
     EventosModule,
     UsuariosModule,
+    AuthModule,
   ],
   controllers: [AppController, ScraperController],
   providers: [AppService, ScraperService],
