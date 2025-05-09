@@ -1,50 +1,61 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/login"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Criar Conta</ion-title>
-  </ion-toolbar>
-</ion-header>
+<form [formGroup]="registerForm" (ngSubmit)="criarConta()">
 
-<ion-content>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Preencha seus dados</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <form (ngSubmit)="criarConta()">
-        <ion-item>
-          <ion-label position="floating">Nome</ion-label>
-          <ion-input [(ngModel)]="nome" name="nome" required></ion-input>
-        </ion-item>
+  <!-- Nome -->
+  <ion-item>
+    <ion-label position="floating">Nome</ion-label>
+    <ion-input formControlName="nome"></ion-input>
+  </ion-item>
+  <ion-note color="danger" *ngIf="registerForm.get('nome')?.touched && registerForm.get('nome')?.hasError('required')">
+    Nome é obrigatório.
+  </ion-note>
 
-        <ion-item>
-          <ion-label position="floating">E-mail</ion-label>
-          <ion-input [(ngModel)]="email" name="email" type="email" required></ion-input>
-        </ion-item>
+  <!-- Email -->
+  <ion-item>
+    <ion-label position="floating">E-mail</ion-label>
+    <ion-input formControlName="email" type="email"></ion-input>
+  </ion-item>
+  <ion-note color="danger" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']">
+    E-mail é obrigatório.
+  </ion-note>
+  <ion-note color="danger" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']">
+    Formato de e-mail inválido.
+  </ion-note>
 
-        <ion-item>
-          <ion-label position="floating">Senha</ion-label>
-          <ion-input [(ngModel)]="senha" name="senha" type="password" required></ion-input>
-        </ion-item>
+  <!-- Senha -->
+  <ion-item>
+    <ion-label position="floating">Senha</ion-label>
+    <ion-input formControlName="senha" type="password"></ion-input>
+  </ion-item>
+  <ion-note color="danger" *ngIf="registerForm.get('senha')?.touched && registerForm.get('senha')?.hasError('required')">
+    Senha é obrigatória.
+  </ion-note>
+  <ion-note color="danger" *ngIf="registerForm.get('senha')?.touched && registerForm.get('senha')?.hasError('minlength')">
+    A senha deve ter no mínimo 6 caracteres.
+  </ion-note>
 
-        <ion-item>
-          <ion-label position="floating">Confirmar Senha</ion-label>
-          <ion-input [(ngModel)]="confirmarSenha" name="confirmarSenha" type="password" required></ion-input>
-        </ion-item>
+  <!-- Confirmar Senha -->
+  <ion-item>
+    <ion-label position="floating">Confirmar Senha</ion-label>
+    <ion-input formControlName="confirmarSenha" type="password"></ion-input>
+  </ion-item>
+  <ion-note color="danger" *ngIf="registerForm.get('confirmarSenha')?.touched && registerForm.hasError('senhasDiferentes')">
+    As senhas não coincidem.
+  </ion-note>
 
-        <ion-item>
-          <ion-label>Papel</ion-label>
-          <ion-select [(ngModel)]="papel" name="papel" interface="popover" placeholder="Selecione o papel" required>
-            <ion-select-option value="organizador">Organizador</ion-select-option>
-            <ion-select-option value="convidado">Convidado</ion-select-option>
-          </ion-select>
-        </ion-item>
+  <!-- Papel -->
+  <ion-item>
+    <ion-label>Papel</ion-label>
+    <ion-select formControlName="papel" interface="popover" placeholder="Selecione o papel">
+      <ion-select-option value="organizador">Organizador</ion-select-option>
+      <ion-select-option value="convidado">Convidado</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-note color="danger" *ngIf="registerForm.get('papel')?.touched && registerForm.get('papel')?.hasError('required')">
+    Escolha um papel.
+  </ion-note>
 
-        <ion-button expand="full" type="submit">Cadastrar</ion-button>
-        <ion-button fill="clear" routerLink="/login">Já tenho conta</ion-button>
-      </form>
-    </ion-card-content>
-  </ion-card>
-</ion-content>
+  <!-- Botões -->
+  <ion-button expand="full" type="submit" [disabled]="!registerForm.valid">Cadastrar</ion-button>
+  <ion-button fill="clear" (click)="voltar()">Já tenho conta</ion-button>
+
+</form>

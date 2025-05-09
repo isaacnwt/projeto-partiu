@@ -27,4 +27,12 @@ export class LoginPage {
       error: () => alert('Credenciais inválidas'),
     });
   }
+
+  irParaCadastro() {
+    this.router.navigateByUrl('/register');
+  }
+
+  disable(): boolean {
+    return this.email.trim() == '' || this.senha.trim() == '';
+  }
 }
