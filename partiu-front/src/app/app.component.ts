@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -11,12 +12,20 @@ import { Router, RouterModule } from '@angular/router';
   imports: [IonicModule, CommonModule, RouterModule]
 })
 export class AppComponent {
-  usuarioLogado = false; // Controla se o usuário está autenticado
+  usuarioLogado = false;
+  nomeUsuario = '';
 
-  constructor(private router: Router) {
-    // Monitora mudanças de rota para verificar login
+  constructor(private router: Router, private authService: AuthService) {
     this.router.events.subscribe(() => {
-      this.usuarioLogado = this.router.url !== '/login' && this.router.url !== '/splash';
+      const usuario = this.authService.getUsuario();
+      this.usuarioLogado = !!usuario;
+      this.nomeUsuario = usuario?.nome ?? '';
     });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.usuarioLogado = false;
+    this.router.navigateByUrl('/splash');
   }
 }

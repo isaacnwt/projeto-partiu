@@ -21,7 +21,7 @@ export class LoginPage {
   login() {
     this.authService.login(this.email, this.senha).subscribe({
       next: (usuario) => {
-        localStorage.setItem('usuario', JSON.stringify(usuario));
+        this.authService.setUsuario(usuario);
         this.router.navigateByUrl('/home');
       },
       error: () => alert('Credenciais inválidas'),
