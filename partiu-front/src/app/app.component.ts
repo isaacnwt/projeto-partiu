@@ -14,12 +14,16 @@ import { AuthService } from './services/auth.service';
 export class AppComponent {
   usuarioLogado = false;
   nomeUsuario = '';
+  isAdmin = false;
+  isOrganizador = false;
 
   constructor(private router: Router, private authService: AuthService) {
     this.router.events.subscribe(() => {
       const usuario = this.authService.getUsuario();
       this.usuarioLogado = !!usuario;
       this.nomeUsuario = usuario?.nome ?? '';
+      this.isAdmin = this.authService.isAdmin();
+      this.isOrganizador = this.authService.isOrganizador();
     });
   }
 

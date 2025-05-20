@@ -16,6 +16,10 @@ export class EventoService {
     return this.http.get<Evento[]>(this.apiUrl);
   }
 
+  getEventosScrapping(): Observable<Evento[]> {
+    return this.http.get<Evento[]>(`${this.apiUrl}/todos`);
+  }
+
   getEventoById(id: string): Observable<Evento> {
     return this.http.get<Evento>(`${this.apiUrl}/${id}`);
   }

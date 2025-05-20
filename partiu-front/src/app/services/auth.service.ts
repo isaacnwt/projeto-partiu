@@ -34,4 +34,21 @@ export class AuthService {
     this.usuarioLogado = null;
     localStorage.removeItem('usuario');
   }
+
+  getTipoUsuario(): 'admin' | 'organizador' | 'convidado' | null {
+    return this.getUsuario()?.tipo ?? null;
+  }
+
+  isAdmin(): boolean {
+    return this.getTipoUsuario() === 'admin';
+  }
+
+  isOrganizador(): boolean {
+    return this.getTipoUsuario() === 'organizador';
+  }
+
+  isConvidado(): boolean {
+    return this.getTipoUsuario() === 'convidado';
+  }
+
 }

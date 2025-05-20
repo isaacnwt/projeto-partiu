@@ -48,7 +48,7 @@ export class GerenciamentoEventosPage implements OnInit {
   }
 
   carregarEventos() {
-    this.eventoService.getEventos().subscribe((eventos) => {
+    this.eventoService.getEventosScrapping().subscribe((eventos) => {
       this.eventos = eventos;
     });
   }

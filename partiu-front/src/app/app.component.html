@@ -10,10 +10,10 @@
         <ion-item routerLink="/home" routerDirection="root">
           <ion-label>Eventos</ion-label>
         </ion-item>
-        <ion-item routerLink="/cadastro-evento" routerDirection="root">
+        <ion-item *ngIf="isOrganizador" routerLink="/cadastro-evento" routerDirection="root">
           <ion-label>Cadastrar Evento</ion-label>
         </ion-item>
-        <ion-item routerLink="/gerenciamento-eventos" routerDirection="root">
+        <ion-item *ngIf="isAdmin" routerLink="/gerenciamento-eventos" routerDirection="root">
           <ion-label>Gerenciar Eventos</ion-label>
         </ion-item>
         <ion-item routerLink="/perfil" routerDirection="root">
