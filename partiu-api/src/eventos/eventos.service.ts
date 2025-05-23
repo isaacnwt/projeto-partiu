@@ -31,10 +31,19 @@ export class EventosService {
     }
   }
 
-  private formatToDate(data: string) {
-    const [dia, mes, ano] = data.split('/').map(Number);
-    const formattedDate = new Date(ano, mes - 1, dia);
-    return formattedDate;
+  async update(id: string, updateEventoDto: Partial<CreateEventoDto>): Promise<Evento> {
+    const eventoAtualizado = await this.eventoModel.findByIdAndUpdate(
+      id,
+      updateEventoDto,
+      { new: true, runValidators: true }
+    ).exec();
+
+    if (!eventoAtualizado) {
+      throw new NotFoundException(`Evento com ID ${id} não encontrado`);
+    }
+
+    return eventoAtualizado;
   }
+
   
 }

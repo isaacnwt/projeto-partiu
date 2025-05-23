@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -30,4 +31,11 @@ export class EventosController {
   async getEventoById(@Param('id') id: string): Promise<Evento> {
     return this.eventosService.findById(id);
   }
+
+  @Put(':id')
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async update(@Param('id') id: string, @Body() updateEventoDto: Partial<CreateEventoDto>) {
+    return this.eventosService.update(id, updateEventoDto);
+  }
+
 }
