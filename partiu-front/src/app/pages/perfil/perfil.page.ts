@@ -14,6 +14,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-perfil',
@@ -38,12 +39,21 @@ import {
 })
 export class PerfilPage implements OnInit {
   usuario = {
-    nome: 'Isaac Newton Andrade dos Santos',
-    email: 'isaac@email.com',
-    telefone: '16987654321',
+    nome: '',
+    email: '',
+    tipo: ''
   };
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    const usuario = this.authService.getUsuario();
+    if (usuario) {
+      this.usuario = {
+        nome: usuario.nome,
+        email: usuario.email,
+        tipo: usuario.tipo || ''
+      };
+    }
+  }
 }

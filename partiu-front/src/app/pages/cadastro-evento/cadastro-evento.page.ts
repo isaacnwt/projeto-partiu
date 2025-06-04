@@ -22,6 +22,7 @@ import {
 } from '@ionic/angular/standalone';
 import { EventoService } from 'src/app/services/evento.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastro-evento',
@@ -53,8 +54,12 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class CadastroEventoPage {
   eventoForm: FormGroup;
+  idEvento?: string;
+  modoEdicao = false;
 
   constructor(
+    private route: ActivatedRoute,
+    private router: Router,
     private eventoService: EventoService,
     private authService: AuthService,
     private fb: FormBuilder
@@ -67,6 +72,36 @@ export class CadastroEventoPage {
       links: this.fb.array([]),
       contatos: this.fb.array([]),
     });
+  }
+
+  ngOnInit(): void {
+    this.idEvento = this.route.snapshot.paramMap.get('id') ?? undefined;
+
+    if (this.idEvento) {
+      this.modoEdicao = true;
+      this.eventoService.getEventoById(this.idEvento).subscribe(evento => {
+        this.eventoForm.patchValue({
+          titulo: evento.titulo,
+          descricao: evento.descricao,
+          data: evento.data?.substring(0, 10),
+          endereco: evento.endereco,
+        });
+
+        evento.links?.forEach(link => {
+          this.links.push(this.fb.group({
+            label: [link.label, Validators.required],
+            url: [link.url, Validators.required],
+          }));
+        });
+
+        evento.contatos?.forEach(contato => {
+          this.contatos.push(this.fb.group({
+            nome: [contato.nome, Validators.required],
+            telefone: [contato.telefone, Validators.required],
+          }));
+        });
+      });
+    }
   }
 
   get links(): FormArray {
@@ -104,27 +139,36 @@ export class CadastroEventoPage {
   }
 
   cadastrar() {
-    if (this.eventoForm.valid) {
-      const usuarioId = this.authService.getUsuarioId();
+    if (this.eventoForm.invalid) return;
 
-      if (!usuarioId) {
-        alert('Usuário não autenticado');
-        return;
-      }
+    const usuarioId = this.authService.getUsuarioId();
+    if (!usuarioId) {
+      alert('Usuário não autenticado');
+      this.router.navigateByUrl('/splash');
+    }
 
-      const evento = {
-        ...this.eventoForm.value,
-        criadoPor: usuarioId
-      };
+    const evento = {
+      ...this.eventoForm.value,
+      criadoPor: usuarioId
+    };
 
-      this.eventoService.cadastrarEvento(evento).subscribe({
-        next: (res) => {
-          console.log('Evento cadastrado com sucesso:', res);
-          this.eventoForm.reset();
+    if (this.modoEdicao && this.idEvento) {
+      const eventoAtualizado = { ...evento, revisado: true };
+
+      this.eventoService.atualizarEvento(this.idEvento, eventoAtualizado).subscribe({
+        next: () => {
+          alert('Evento atualizado com sucesso!');
+          this.router.navigateByUrl('/home');
         },
-        error: (err) => {
-          console.error('Erro ao cadastrar evento:', err);
-        }
+        error: err => console.error('Erro ao atualizar:', err)
+      });
+    } else {
+      this.eventoService.cadastrarEvento(evento).subscribe({
+        next: () => {
+          alert('Evento cadastrado com sucesso!');
+          this.router.navigateByUrl('/home');
+        },
+        error: err => console.error('Erro ao cadastrar:', err)
       });
     }
   }

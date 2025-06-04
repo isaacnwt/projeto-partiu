@@ -19,7 +19,7 @@ export class HomePage {
   constructor(private eventoService: EventoService, private router: Router) {}
 
   ngOnInit() {
-    this.eventoService.getEventos().subscribe((eventos) => {
+    this.eventoService.getEventosPublicos().subscribe((eventos) => {
       this.eventos = eventos;
     });
   }

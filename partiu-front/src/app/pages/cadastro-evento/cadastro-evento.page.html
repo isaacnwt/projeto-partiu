@@ -85,6 +85,9 @@
       </ion-item>
     </ion-list>
 
-    <ion-button expand="full" type="submit" [disabled]="!eventoForm.valid">Cadastrar</ion-button>
+    <ion-button expand="full" type="submit" [disabled]="!eventoForm.valid">
+      {{ modoEdicao ? 'Salvar Alterações' : 'Cadastrar' }}
+    </ion-button>
+
   </form>
 </ion-content>

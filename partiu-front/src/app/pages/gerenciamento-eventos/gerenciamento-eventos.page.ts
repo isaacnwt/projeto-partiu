@@ -16,6 +16,8 @@ import {
 } from '@ionic/angular/standalone';
 import { EventoService } from 'src/app/services/evento.service';
 import { Evento } from 'src/app/models/evento.model';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-gerenciamento-eventos',
@@ -41,16 +43,33 @@ import { Evento } from 'src/app/models/evento.model';
 export class GerenciamentoEventosPage implements OnInit {
   eventos: Evento[] = [];
 
-  constructor(private eventoService: EventoService) {}
+  constructor(
+    private eventoService: EventoService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.carregarEventos();
   }
 
   carregarEventos() {
-    this.eventoService.getEventosScrapping().subscribe((eventos) => {
-      this.eventos = eventos;
-    });
+    const usuario = this.authService.getUsuario();
+    if (!usuario) return;
+
+    if (usuario.tipo === 'admin') {
+      this.eventoService.getEventosAutomaticos().subscribe((eventos) => {
+        this.eventos = eventos;
+      });
+    } else if (usuario.tipo === 'organizador') {
+      this.eventoService.getEventosPorUsuario(usuario._id).subscribe((eventos) => {
+        this.eventos = eventos;
+      });
+    }
+  }
+
+  editarEvento(id: string) {
+    this.router.navigateByUrl(`/editar-evento/${id}`);
   }
 
   excluirEvento(id: string) {
@@ -59,3 +78,4 @@ export class GerenciamentoEventosPage implements OnInit {
     });
   }
 }
+

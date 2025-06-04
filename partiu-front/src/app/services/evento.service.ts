@@ -16,12 +16,20 @@ export class EventoService {
     return this.http.get<Evento[]>(this.apiUrl);
   }
 
-  getEventosScrapping(): Observable<Evento[]> {
-    return this.http.get<Evento[]>(`${this.apiUrl}/todos`);
+  getEventosPublicos(): Observable<Evento[]> {
+    return this.http.get<Evento[]>(`${this.apiUrl}/publicos`);
   }
 
   getEventoById(id: string): Observable<Evento> {
     return this.http.get<Evento>(`${this.apiUrl}/${id}`);
+  }
+
+  getEventosPorUsuario(usuarioId: string): Observable<Evento[]> {
+  return this.http.get<Evento[]>(`${this.apiUrl}/usuario/${usuarioId}`);
+}
+
+  getEventosAutomaticos(): Observable<Evento[]> {
+    return this.http.get<Evento[]>(`${this.apiUrl}/automaticos/pendentes`);
   }
 
   cadastrarEvento(evento: Evento): Observable<Evento> {
@@ -31,4 +39,9 @@ export class EventoService {
   deletarEvento(id: string): Observable<Evento> {
     throw new Error('Method not implemented.');
   }
+
+  atualizarEvento(id: string, evento: Evento): Observable<Evento> {
+    return this.http.put<Evento>(`${this.apiUrl}/${id}`, evento);
+  }
+
 }
