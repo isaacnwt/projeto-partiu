@@ -19,6 +19,15 @@ export class EventosService {
     return this.eventoModel.find().exec();
   }
 
+  async findAllPublicos(): Promise<Evento[]> {
+    return this.eventoModel.find({
+      $or: [
+        { fonteAutomatica: false },
+        { fonteAutomatica: true, revisado: true }
+      ]
+    }).exec();
+  }
+
   async findById(id: string): Promise<Evento> {
     try {
       const evento = await this.eventoModel.findById(id).exec();
@@ -45,5 +54,16 @@ export class EventosService {
     return eventoAtualizado;
   }
 
-  
+  async findByUsuario(usuarioId: string): Promise<Evento[]> {
+    return this.eventoModel.find({ criadoPor: usuarioId }).exec();
+  }
+
+  async findAutomaticos(): Promise<Evento[]> {
+    return this.eventoModel.find({ fonteAutomatica: true }).exec();
+  }
+
+  async findAutomaticosNaoRevisados(): Promise<Evento[]> {
+    return this.eventoModel.find({ fonteAutomatica: true, revisado: false }).exec();
+  }
+
 }

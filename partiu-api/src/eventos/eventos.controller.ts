@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   UsePipes,
@@ -27,6 +28,11 @@ export class EventosController {
     return this.eventosService.findAll();
   }
 
+  @Get('publicos')
+  async findAllPublicos() {
+    return this.eventosService.findAllPublicos();
+  }
+
   @Get(':id')
   async getEventoById(@Param('id') id: string): Promise<Evento> {
     return this.eventosService.findById(id);
@@ -36,6 +42,21 @@ export class EventosController {
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async update(@Param('id') id: string, @Body() updateEventoDto: Partial<CreateEventoDto>) {
     return this.eventosService.update(id, updateEventoDto);
+  }
+
+  @Get('usuario/:id')
+  async getEventosPorUsuario(@Param('id') id: string): Promise<Evento[]> {
+    return this.eventosService.findByUsuario(id);
+  }
+
+  @Get('automaticos')
+  async getEventosAutomaticos(): Promise<Evento[]> {
+    return this.eventosService.findAutomaticos();
+  }
+
+  @Get('automaticos/pendentes')
+  async getEventosAutomaticosNaoRevisados() {
+    return this.eventosService.findAutomaticosNaoRevisados();
   }
 
 }

@@ -44,6 +44,11 @@ export class Evento {
 
   @Prop({ default: false })
   fonteAutomatica: boolean;
+
+  @Prop({ default: false })
+  revisado: boolean;
+
+  @Prop() origemScrapingId?: string; // campo confiável para evitar duplicação
 }
 
 export const EventoSchema = SchemaFactory.createForClass(Evento);
