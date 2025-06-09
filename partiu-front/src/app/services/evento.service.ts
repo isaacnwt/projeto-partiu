@@ -36,8 +36,8 @@ export class EventoService {
     return this.http.post<Evento>(this.apiUrl, evento);
   }
 
-  deletarEvento(id: string): Observable<Evento> {
-    throw new Error('Method not implemented.');
+  deletarEvento(id: string): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
   }
 
   atualizarEvento(id: string, evento: Evento): Observable<Evento> {

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -57,6 +58,11 @@ export class EventosController {
   @Get('automaticos/pendentes')
   async getEventosAutomaticosNaoRevisados() {
     return this.eventosService.findAutomaticosNaoRevisados();
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    return this.eventosService.delete(id);
   }
 
 }

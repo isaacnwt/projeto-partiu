@@ -73,9 +73,12 @@ export class GerenciamentoEventosPage implements OnInit {
   }
 
   excluirEvento(id: string) {
-    this.eventoService.deletarEvento(id).subscribe(() => {
-      this.eventos = this.eventos.filter((evento) => evento._id !== id);
-    });
+    if (confirm('Tem certeza que deseja excluir este evento?')) {
+      this.eventoService.deletarEvento(id).subscribe(() => {
+        this.eventos = this.eventos.filter((evento) => evento._id !== id);
+      });
+    }
   }
+
 }
 

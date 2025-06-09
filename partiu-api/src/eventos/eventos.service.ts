@@ -66,4 +66,12 @@ export class EventosService {
     return this.eventoModel.find({ fonteAutomatica: true, revisado: false }).exec();
   }
 
+  async delete(id: string): Promise<{ message: string }> {
+    const evento = await this.eventoModel.findByIdAndDelete(id);
+    if (!evento) {
+      throw new NotFoundException(`Evento com ID ${id} não encontrado.`);
+    }
+    return { message: 'Evento excluído com sucesso.' };
+  }
+
 }
