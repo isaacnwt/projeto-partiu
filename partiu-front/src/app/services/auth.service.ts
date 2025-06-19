@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 export class AuthService {
   private usuarioLogado: any = null;
 
-  private apiUrl = 'http://localhost:3000/auth';
+  private apiUrl = 'http://192.168.0.20:3000/auth';
 
   constructor(private http: HttpClient) {}
 
